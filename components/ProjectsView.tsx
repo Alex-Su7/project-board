@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Project, ProjectStatus, Task, Priority } from '../types';
 import { Plus, Sparkles, Loader2, Calendar, ArrowRight, X, Link, CheckCircle2, Pencil, Save, Calculator, Search, Filter } from 'lucide-react';
@@ -58,12 +59,8 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
     setIsGenerating(true);
     try {
       // Extract history: last 10 completed tasks to learn user style
-      const history = tasks
-        .filter(t => t.isCompleted)
-        .slice(0, 10)
-        .map(t => t.title);
-
-      const tasksResult = await suggestProjectTasks(`${name}: ${desc}`, history);
+      // Fix: Removed 'history' argument as suggestProjectTasks in llmService only accepts projectInfo string.
+      const tasksResult = await suggestProjectTasks(`${name}: ${desc}`);
       setGeneratedTasks(tasksResult);
     } catch (e) {
       alert("AI 生成计划失败，请检查配置。");
